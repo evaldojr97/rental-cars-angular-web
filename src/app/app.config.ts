@@ -1,6 +1,7 @@
 import { APP_INITIALIZER, ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { routes } from './app.routes';
 // import { KeycloakService } from 'keycloak-angular';
 // import { AuthGuard } from './core/auth/auth.guard';
@@ -11,6 +12,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideAnimations(),
+    provideHttpClient(withInterceptorsFromDi()),
     // AuthGuard,
     // {
     //   provide: APP_INITIALIZER,

@@ -1,0 +1,95 @@
+<div class="report-container">
+  <h1>Relatórios</h1>
+  <p>Preencha o filtro para realizar uma pesquisa.</p>
+
+  <form [formGroup]="reportForm" class="filters-form">
+    <div class="form-group">
+      <label for="dataAluguel">Data do aluguel</label>
+      <input 
+        id="dataAluguel"
+        type="date" 
+        formControlName="dataAluguel"
+        class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label for="modeloCarro">Modelo do carro</label>
+      <select id="modeloCarro" formControlName="modeloCarro" class="form-control">
+        <option value="">Todos</option>
+        <option *ngFor="let carro of carros" [value]="carro.modelo">
+          {{ carro.modelo }}
+        </option>
+      </select>
+    </div>
+
+    <button 
+      type="button" 
+      (click)="search()" 
+      class="btn btn-primary"
+      [disabled]="isLoading">
+      <span *ngIf="isLoading">🔄 Buscando...</span>
+      <span *ngIf="!isLoading">🔍 Buscar</span>
+    </button>
+    
+  </form>
+
+  <!-- Loading indicator -->
+  <div *ngIf="isLoading" class="loading">
+    <div class="loading-spinner"></div>
+    <p>Carregando dados...</p>
+  </div>
+
+  <!-- Tabela de resultados -->
+  <div *ngIf="showTable && !isLoading" class="table-container">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>DATA</th>
+          <th>MODELO</th>
+          <th>KM</th>
+          <th>CLIENTE</th>
+          <th>TELEFONE</th>
+          <th>DEVOLUÇÃO</th>
+          <th>PAGO</th>
+          <th>VALOR</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of alugueis; trackBy: trackByFn" class="data-row">
+          <td>{{ item.dataAluguel | date:'dd/MM/yyyy' }}</td>
+          <td class="modelo-cell">{{ item.modeloCarro }}</td>
+          <td class="km-cell">{{ item.kmCarro | number:'1.0-0' }}</td>
+          <td class="cliente-cell">{{ item.nomeCliente }}</td>
+          <td class="telefone-cell">{{ formatPhone(item.telefoneCliente) }}</td>
+          <td>{{ item.dataDevolucao | date:'dd/MM/yyyy' }}</td>
+          <td class="status-cell">
+            <span class="status-badge" [ngClass]="{'paid': item.pago === 'SIM', 'unpaid': item.pago === 'NAO'}">
+              {{ item.pago }}
+            </span>
+          </td>
+          <td class="valor-cell">{{ item.valor | currency:'BRL':'symbol':'1.2-2' }}</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr class="total-row">
+          <td colspan="7" class="total-label">Soma de débitos:</td>
+          <td class="total-value">{{ totalDebitos | currency:'BRL':'symbol':'1.2-2' }}</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <!-- Mensagem quando não há dados -->
+  <div *ngIf="showTable && alugueis.length === 0 && !isLoading" class="no-data">
+    <div class="no-data-icon">📋</div>
+    <h3>Nenhum aluguel encontrado</h3>
+    <p>Tente ajustar os filtros de busca ou verifique se há dados cadastrados.</p>
+  </div>
+
+  <!-- Mensagem inicial -->
+  <div *ngIf="!showTable && !isLoading" class="initial-message">
+    <div class="initial-icon">🔍</div>
+    <h3>Pronto para buscar</h3>
+    <p>Configure os filtros acima e clique em "Buscar" para visualizar os aluguéis.</p>
+  </div>
+</div>

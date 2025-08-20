@@ -8,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '../template/header/header.component';
 import { SideMenuComponent } from '../template/side-menu/side-menu.component';
 import { FooterComponent } from '../template/footer/footer.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-layout',
@@ -27,34 +28,29 @@ import { FooterComponent } from '../template/footer/footer.component';
   styleUrl: './layout.component.scss',
 })
 export class LayoutComponent implements OnInit {
+  constructor(private router: Router) {}
   items!: MenuItem[];
 
-  breadcumbs: MenuItem[] = [{ label: 'Pagina Inicial' }];
+  breadcumbs: MenuItem[] = [{ label: '' }];
 
   breadcumbsHome!: MenuItem;
 
   ngOnInit(): void {
     this.items = [
       {
-        label: 'Item Menu 1',
-        icon: 'fa fa-search fa-lg',
-        command: () => {},
+        label: 'Alugueis',
+        icon: 'fa fa-car fa-lg',
+        command: () => {
+          this.router.navigate(['/alugueis']);
+        },
       },
       {
-        label: 'Item Menu 2',
-        icon: 'fa fa-home fa-lg',
-        command: () => {},
-      },
-      {
-        label: 'Item Menu 3',
-        icon: 'fa fa-folder-open',
-        command: () => {},
-      },
-      {
-        label: 'Item Menu 4',
-        icon: ' fa fa-money',
-        command: () => {},
-      },
+        label: 'Relatórios',
+        icon: 'fa fa-file-o fa-lg',
+        command: () => {
+          this.router.navigate(['/relatorios']);
+        },
+      },      
     ];
   }
 

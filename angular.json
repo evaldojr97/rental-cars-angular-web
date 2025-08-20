@@ -67,6 +67,9 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "proxyConfig": "proxy.conf.json"
+          },
           "configurations": {
             "production": {
               "buildTarget": "projeto-imobiliario:build:production"
@@ -104,5 +107,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "96f57e3e-2514-4edb-9b0e-64ee40fe59dc"
   }
 }
